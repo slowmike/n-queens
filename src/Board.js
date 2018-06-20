@@ -79,12 +79,37 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var inRow = 0;
+      for (slot of this.rows()[rowIndex]) {
+        if (slot === 1) {
+          inRow++;
+        }
+      }
+      return inRow > 1;
+      // var conflicts = function(curIndex, array) {
+      //   var numConflicts = 0;
+      //   if(curIndex === array[rowIndex].length) {
+      //     return numConflicts;
+      //   }
+      //   if(array[rowIndex][curIndex]) {
+      //     numConflicts++;
+      //   }
+      //   console.log(curIndex);
+      //   return numConflicts+conflicts(curIndex+1);
+      // };
+
+      // return conflicts(0, this.rows()) > 1;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var hasConflict = false;
+      for (var rowIndex in this.rows()) {
+        if (this.hasRowConflictAt(rowIndex)) {
+          hasConflict = true;
+        }
+      }
+      return hasConflict;
     },
 
 
@@ -94,12 +119,24 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var inCol = 0;
+      for (var row of this.rows()) {
+        if(row[colIndex] === 1) {
+          inCol++;
+        }
+      }
+      return inCol > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var hasConflict = false;
+      for (var colIndex in this.rows()[0]) {
+        if (this.hasColConflictAt(colIndex)) {
+          hasConflict = true;
+        }
+      }
+      return hasConflict;
     },
 
 
@@ -109,12 +146,32 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var inDiagonal = 0;
+      var diagonalIndex = majorDiagonalColumnIndexAtFirstRow;
+      var getDiagonalIndex = this._getFirstRowColumnIndexForMajorDiagonalOn;
+      var board = this.rows();
+      for (var rowIndex in board) {
+        for (var colIndex in board[rowIndex]) {
+          if (getDiagonalIndex(rowIndex, colIndex) === diagonalIndex && board[rowIndex][colIndex] === 1) {
+            inDiagonal++;
+          }
+        }
+      }
+      return inDiagonal > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var hasConflict = false;
+      for (var rowIndex in this.rows()) {
+        for (var colIndex in this.rows()[rowIndex]) {
+          var diagonalIndex = this._getFirst RowColumnIndexForMajorDiagonalOn(rowIndex, colIndex);
+          if (this.hasMajorDiagonalConflictAt(diagonalIndex)) {
+            hasConflict = true;
+          }
+        }
+      }
+      return hasConflict;
     },
 
 
@@ -124,12 +181,32 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var inDiagonal = 0;
+      var diagonalIndex = minorDiagonalColumnIndexAtFirstRow;
+      var getDiagonalIndex = this._getFirstRowColumnIndexForMinorDiagonalOn;
+      var board = this.rows();
+      for (var rowIndex in board) {
+        for (var colIndex in board[rowIndex]) {
+          if (getDiagonalIndex(JSON.parse(rowIndex), JSON.parse(colIndex)) === diagonalIndex && board[rowIndex][colIndex] === 1) {
+            inDiagonal++;
+          }
+        }
+      }
+      return inDiagonal > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var hasConflict = false;
+      for (var rowIndex in this.rows()) {
+        for (var colIndex in this.rows()[rowIndex]) {
+          var diagonalIndex = this._getFirstRowColumnIndexForMinorDiagonalOn(JSON.parse(rowIndex), JSON.parse(colIndex));
+          if (this.hasMinorDiagonalConflictAt(diagonalIndex)) {
+            hasConflict = true;
+          }
+        }
+      }
+      return hasConflict;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
