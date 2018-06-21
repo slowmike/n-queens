@@ -165,7 +165,7 @@
       var hasConflict = false;
       for (var rowIndex in this.rows()) {
         for (var colIndex in this.rows()[rowIndex]) {
-          var diagonalIndex = this._getFirst RowColumnIndexForMajorDiagonalOn(rowIndex, colIndex);
+          var diagonalIndex = this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex);
           if (this.hasMajorDiagonalConflictAt(diagonalIndex)) {
             hasConflict = true;
           }
