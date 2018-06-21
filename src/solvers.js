@@ -72,7 +72,47 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = new Board({n: n});
+  var solution = [];
+  // create new board sized n,n
+  var board = new Board({n: n});
+  // create a counter var for number of rooks placed
+  var queenCount = 0;
+  var found = false;
+  // create new function that takes in currentRow, board??
+  var repeat = function(currentRow, boardState) {
+    // if currentRow is equal to n
+    if (currentRow >= n) {
+      // if currentRow is equal to number of rooks
+      if (currentRow === queenCount) {
+        // solutionCount++;
+        found = true;
+      }
+      // return
+      return boardState;
+    }
+
+    // iterate through the row
+    for (var i = 0; i < n; i++) {
+      // toggle and add one to rook counter
+      boardState.togglePiece(currentRow, i);
+      queenCount++;
+      // if there is no conflict
+      if (!boardState.hasAnyQueenConflictsOn(currentRow, i)) {
+        // rune the function with nextrow, board
+        repeat(currentRow+1, boardState);
+      }
+      // toggle and minus one to rook counter
+      //console.log(JSON.stringify(boardState.rows()));
+      if(!found) {
+        boardState.togglePiece(currentRow, i);
+        queenCount--;
+      } else {
+        return boardState;
+      }
+    }
+    return boardState;
+  }
+  solution = repeat(0, board).rows();
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
@@ -84,13 +124,13 @@ window.countNQueensSolutions = function(n) {
   // create new board sized n,n
   var board = new Board({n: n});
   // create a counter var for number of rooks placed
-  var rookCount = 0;
+  var queenCount = 0;
   // create new function that takes in currentRow, board??
   var repeat = function(currentRow, boardState) {
     // if currentRow is equal to n
     if (currentRow >= n) {
       // if currentRow is equal to number of rooks
-      if (currentRow === rookCount) {
+      if (currentRow === queenCount) {
         // solutionCount++;
         solutionCount++;
       }
@@ -102,7 +142,7 @@ window.countNQueensSolutions = function(n) {
     for (var i = 0; i < n; i++) {
       // toggle and add one to rook counter
       boardState.togglePiece(currentRow, i);
-      rookCount++;
+      queenCount++;
       // if there is no conflict
       if (!boardState.hasAnyQueenConflictsOn(currentRow, i)) {
         console.log(JSON.stringify(boardState));
@@ -111,7 +151,7 @@ window.countNQueensSolutions = function(n) {
       }
       // toggle and minus one to rook counter
       boardState.togglePiece(currentRow, i);
-      rookCount--;
+      queenCount--;
     }
   }
   repeat(0, board);
